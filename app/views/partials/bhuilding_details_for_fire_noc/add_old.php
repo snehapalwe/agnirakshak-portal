@@ -1,0 +1,128 @@
+<?php
+$comp_model = new SharedController;
+$page_element_id = "add-page-" . random_str();
+$current_page = $this->set_current_page_link();
+$csrf_token = Csrf::$token;
+$show_header = $this->show_header;
+$view_title = $this->view_title;
+$redirect_to = $this->redirect_to;
+?>
+<section class="page" id="<?php echo $page_element_id; ?>" data-page-type="add"  data-display-type="" data-page-url="<?php print_link($current_page); ?>">
+    <?php
+    if( $show_header == true ){
+    ?>
+    <div  class="bg-light p-3 mb-3">
+        <div class="container">
+            <div class="row ">
+                <div class="col ">
+                    <h4 class="record-title">Add New Building Details For Fire Noc</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+    }
+    ?>
+    <div  class="">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12 comp-grid">
+                    <?php $this :: display_page_errors(); ?>
+                    <div  class="bg-light p-3 animated fadeIn page-content">
+                        <form id="bhuilding_details_for_fire_noc-add-form" role="form" novalidate enctype="multipart/form-data" class="form page-form form-vertical needs-validation" action="<?php print_link("bhuilding_details_for_fire_noc/add?csrf_token=$csrf_token") ?>" method="post">
+                            <div>
+                                <input id="ctrl-db_name"  value="<?php  echo $this->set_field_value('db_name',""); ?>" type="hidden" placeholder="Enter Db Name"  readonly required="" name="db_name"  class="form-control " />
+                                    <input id="ctrl-recid"  value="<?php  echo $this->set_field_value('recid',""); ?>" type="hidden" placeholder="Enter Recid"  readonly required="" name="recid"  class="form-control " />
+                                        <div class="form-group ">
+                                            <label class="control-label" for="name_of_building">NAME OF BUILDING  <span class="text-danger">*</span></label>
+                                            <div id="ctrl-name_of_building-holder" class=""> 
+                                                <input id="ctrl-name_of_building"  value="<?php  echo $this->set_field_value('name_of_building',""); ?>" type="text" placeholder="Enter Name Of Building"  required="" name="name_of_building"  class="form-control " />
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label" for="do_you_have_wing">DO YOU HAVE WING?  <span class="text-danger">*</span></label>
+                                                <div id="ctrl-do_you_have_wing-holder" class=""> 
+                                                    <select required=""  id="ctrl-do_you_have_wing" name="do_you_have_wing"  placeholder="Select a value ..."    class="custom-select" >
+                                                        <option value="">Select a value ...</option>
+                                                        <?php
+                                                        $do_you_have_wing_options = Menu :: $is_redevelopment;
+                                                        if(!empty($do_you_have_wing_options)){
+                                                        foreach($do_you_have_wing_options as $option){
+                                                        $value = $option['value'];
+                                                        $label = $option['label'];
+                                                        $selected = $this->set_field_selected('do_you_have_wing', $value, "");
+                                                        ?>
+                                                        <option <?php echo $selected ?> value="<?php echo $value ?>">
+                                                            <?php echo $label ?>
+                                                        </option>                                   
+                                                        <?php
+                                                        }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label" for="building_type_id">BUILDING TYPE ID  <span class="text-danger">*</span></label>
+                                                <div id="ctrl-building_type_id-holder" class=""> 
+                                                    <select required=""  id="ctrl-building_type_id" name="building_type_id"  placeholder="Select a value ..."    class="custom-select" >
+                                                        <option value="">Select a value ...</option>
+                                                        <?php 
+                                                        $building_type_id_options = $comp_model -> bhuilding_details_for_fire_noc_building_type_id_option_list();
+                                                        if(!empty($building_type_id_options)){
+                                                        foreach($building_type_id_options as $option){
+                                                        $value = (!empty($option['value']) ? $option['value'] : null);
+                                                        $label = (!empty($option['label']) ? $option['label'] : $value);
+                                                        $selected = $this->set_field_selected('building_type_id',$value, "");
+                                                        ?>
+                                                        <option <?php echo $selected; ?> value="<?php echo $value; ?>">
+                                                            <?php echo $label; ?>
+                                                        </option>
+                                                        <?php
+                                                        }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label" for="height_of_building_in_mtr">HEIGHT OF BUILDING (M)  <span class="text-danger">*</span></label>
+                                                <div id="ctrl-height_of_building_in_mtr-holder" class=""> 
+                                                    <input id="ctrl-height_of_building_in_mtr"  value="<?php  echo $this->set_field_value('height_of_building_in_mtr',""); ?>" type="number" placeholder="Enter Height Of Building In Mtr" step="0.1"  required="" name="height_of_building_in_mtr"  class="form-control " />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label" for="number_of_staircase">NUMBER OF STAIRCASES  <span class="text-danger">*</span></label>
+                                                    <div id="ctrl-number_of_staircase-holder" class=""> 
+                                                        <input id="ctrl-number_of_staircase"  value="<?php  echo $this->set_field_value('number_of_staircase',""); ?>" type="number" placeholder="Enter Number Of Staircase" step="1"  required="" name="number_of_staircase"  class="form-control " />
+                                                        </div>
+                                                        <small class="form-text"><p style="color: red; font-size: 12px;">Enter the count of different types of staircases in the building. For each type, you must provide specific details in the nextform (Inside Buildings Page). Do not enter the number of steps.</p></small>
+                                                    </div>
+                                                    <div class="form-group ">
+                                                        <label class="control-label" for="number_of_lifts">NUMBER OF LIFTS  <span class="text-danger">*</span></label>
+                                                        <div id="ctrl-number_of_lifts-holder" class=""> 
+                                                            <input id="ctrl-number_of_lifts"  value="<?php  echo $this->set_field_value('number_of_lifts',""); ?>" type="number" placeholder="Enter Number Of Lifts" step="1"  required="" name="number_of_lifts"  class="form-control " />
+                                                            </div>
+                                                            <small class="form-text"><p style="color: red; font-size: 12px;">Enter the count for each type of lift. For every lift counted, you must provide its specific details in the next form (Inside Buildings Page).</p></small>
+                                                        </div>
+                                                        <div class="form-group ">
+                                                            <label class="control-label" for="location_count_of_refuge_area">LOCATION COUNT OF REFUGE AREA  <span class="text-danger">*</span></label>
+                                                            <div id="ctrl-location_count_of_refuge_area-holder" class=""> 
+                                                                <input id="ctrl-location_count_of_refuge_area"  value="<?php  echo $this->set_field_value('location_count_of_refuge_area',""); ?>" type="number" placeholder="Enter Location Count Of Refuge Area" step="1"  required="" name="location_count_of_refuge_area"  class="form-control " />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group form-submit-btn-holder text-center mt-3">
+                                                            <div class="form-ajax-status"></div>
+                                                            <button class="btn btn-primary" type="submit">
+                                                                Submit
+                                                                <i class="fa fa-send"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>

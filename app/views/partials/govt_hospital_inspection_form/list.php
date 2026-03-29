@@ -1,0 +1,477 @@
+<?php 
+//check if current user role is allowed access to the pages
+$can_add = ACL::is_allowed("govt_hospital_inspection_form/add");
+$can_edit = ACL::is_allowed("govt_hospital_inspection_form/edit");
+$can_view = ACL::is_allowed("govt_hospital_inspection_form/view");
+$can_delete = ACL::is_allowed("govt_hospital_inspection_form/delete");
+?>
+<?php
+$comp_model = new SharedController;
+$page_element_id = "list-page-" . random_str();
+$current_page = $this->set_current_page_link();
+$csrf_token = Csrf::$token;
+//Page Data From Controller
+$view_data = $this->view_data;
+$records = $view_data->records;
+$record_count = $view_data->record_count;
+$total_records = $view_data->total_records;
+$field_name = $this->route->field_name;
+$field_value = $this->route->field_value;
+$view_title = $this->view_title;
+$show_header = $this->show_header;
+$show_footer = $this->show_footer;
+$show_pagination = $this->show_pagination;
+?>
+<section class="page" id="<?php echo $page_element_id; ?>" data-page-type="list"  data-display-type="grid" data-page-url="<?php print_link($current_page); ?>">
+    <?php
+    if( $show_header == true ){
+    ?>
+    <div  class="bg-light p-3 mb-3">
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col ">
+                    <h4 class="record-title">Government Hospital Inspection / शासकीय हॉस्पिटल पाहणी</h4>
+                </div>
+                <div class="col-sm-3 ">
+                    <?php if($can_add){ ?>
+                    <a  class="btn btn btn-primary my-1" href="<?php print_link("govt_hospital_inspection_form/add") ?>">
+                        <i class="fa fa-plus"></i>                              
+                        Add New / नवीन नोंद 
+                    </a>
+                    <?php } ?>
+                </div>
+                <div class="col-sm-4 ">
+                    <form  class="search" action="<?php print_link('govt_hospital_inspection_form'); ?>" method="get">
+                        <div class="input-group">
+                            <input value="<?php echo get_value('search'); ?>" class="form-control" type="text" name="search"  placeholder="Search" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-12 comp-grid">
+                        <div class="">
+                            <!-- Page bread crumbs components-->
+                            <?php
+                            if(!empty($field_name) || !empty($_GET['search'])){
+                            ?>
+                            <hr class="sm d-block d-sm-none" />
+                            <nav class="page-header-breadcrumbs mt-2" aria-label="breadcrumb">
+                                <ul class="breadcrumb m-0 p-1">
+                                    <?php
+                                    if(!empty($field_name)){
+                                    ?>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-decoration-none" href="<?php print_link('govt_hospital_inspection_form'); ?>">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <?php echo (get_value("tag") ? get_value("tag")  :  make_readable($field_name)); ?>
+                                    </li>
+                                    <li  class="breadcrumb-item active text-capitalize font-weight-bold">
+                                        <?php echo (get_value("label") ? get_value("label")  :  make_readable(urldecode($field_value))); ?>
+                                    </li>
+                                    <?php 
+                                    }   
+                                    ?>
+                                    <?php
+                                    if(get_value("search")){
+                                    ?>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-decoration-none" href="<?php print_link('govt_hospital_inspection_form'); ?>">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item text-capitalize">
+                                        Search
+                                    </li>
+                                    <li  class="breadcrumb-item active text-capitalize font-weight-bold"><?php echo get_value("search"); ?></li>
+                                    <?php
+                                    }
+                                    ?>
+                                </ul>
+                            </nav>
+                            <!--End of Page bread crumbs components-->
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        }
+        ?>
+        <div  class="">
+            <div class="container-fluid">
+                <div class="row ">
+                    <div class="col-md-12 comp-grid">
+                        <?php $this :: display_page_errors(); ?>
+                        <div  class=" animated fadeIn page-content">
+                            <div id="govt_hospital_inspection_form-list-records">
+                                <?php
+                                if(!empty($records)){
+                                ?>
+                                <div id="page-report-body">
+                                    <div class="row sm-gutters page-data" id="page-data-<?php echo $page_element_id; ?>">
+                                        <!--record-->
+                                        <?php
+                                        $counter = 0;
+                                        foreach($records as $data){
+                                        $rec_id = (!empty($data['id']) ? urlencode($data['id']) : null);
+                                        $counter++;
+                                        ?>
+                                        <div class="col-sm-4">
+                                            <div class="bg-light p-2 mb-3 animated bounceIn">
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ID :  
+                                                    </span>
+                                                <?php echo $data['id']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        HOSPITAL / HEALTH CENTER NAME:  
+                                                    </span>
+                                                <?php echo $data['hospital_or_health_center_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        HOSPITAL / HEALTH CENTER ADDRESS:  
+                                                    </span>
+                                                <?php echo $data['hospital_or_health_center_address']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        DOCTOR NAME :  
+                                                    </span>
+                                                <?php echo $data['doctor_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        DOCTOR MOBILE NO. :  
+                                                    </span>
+                                                <?php echo $data['doctor_mobile_no']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        BUILDING HEIGHT :  
+                                                    </span>
+                                                <?php echo $data['building_height']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        LIFTS COMPANY NAME :  
+                                                    </span>
+                                                <?php echo $data['lifts_company_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF LIFTS IN BUILDING :  
+                                                    </span>
+                                                <?php echo $data['no_lifts_in_building']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        CAPACITY OF LIFTS :  
+                                                    </span>
+                                                <?php echo $data['capacity_of_lifts']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ELEVATORS AMC DONE BY ORGANIZATION NAME :  
+                                                    </span>
+                                                <?php echo $data['elevators_amc_done_by_org_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ELEVATORS AMC PERIOD :  
+                                                    </span>
+                                                <?php echo $data['elevators_amc_period']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF STAIRCASES IN BUILDING :  
+                                                    </span>
+                                                <?php echo $data['number_of_staircase_in_bulding']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        WIDTH OF STAIRCASE IN BUILDING :  
+                                                    </span>
+                                                <?php echo $data['width_of_staircase_in_bulding']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ENTRANCE ROUTES COUNT :  
+                                                    </span>
+                                                <?php echo $data['entrance_routes_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        EXIT ROUTES COUNT :  
+                                                    </span>
+                                                <?php echo $data['exit_routes_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS RECORD ROOM AVAILABLE? :  
+                                                    </span>
+                                                <?php echo $data['is_record_room_available']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        HOSPITAL AREA :  
+                                                    </span>
+                                                <?php echo $data['hospital_area']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF DOCTORS :  
+                                                    </span>
+                                                <?php echo $data['doctors_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF NURSES :  
+                                                    </span>
+                                                <?php echo $data['nurses_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF WARD BOYS :  
+                                                    </span>
+                                                <?php echo $data['ward_boy_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF AUNTS :  
+                                                    </span>
+                                                <?php echo $data['aunts_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NUMBER OF CLERKS :  
+                                                    </span>
+                                                <?php echo $data['clerk_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        OTHER EMPLOYEES COUNT :  
+                                                    </span>
+                                                <?php echo $data['other_employees_count']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        Floor Number Of Hospital ID :  
+                                                    </span>
+                                                <?php echo $data['floor_number_of_hospital_id']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        FLOOR NUMBER :  
+                                                    </span>
+                                                <?php echo $data['floor_number_of_hospital_value']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS OT DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_ot_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS X-RAY DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_xray_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS OPD DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_opd_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS EMERGENCY OPD DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_emergency_opd_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS PATHOLOGY DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_patholoty_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS POST-NATAL CARE DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_post_nutal_care_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS ICU DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_icu_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS GENERAL WARD MEN DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_gw_men_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS GENERAL WARD WOMEN DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_gw_women_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS SPECIAL WARD DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_special_ward_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS ANTE-NATAL CARE DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_ante_nutal_care_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        IS NICU DEPT? :  
+                                                    </span>
+                                                <?php echo $data['is_nicu_dept']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        DIRECTIONAL BOARD :  
+                                                    </span>
+                                                <?php echo $data['directional_board']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        TOTAL NO. OF BEDS IN HOSPITAL :  
+                                                    </span>
+                                                <?php echo $data['total_no_beds_hospital']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        GENERATOR SYSTEM CAPACITY :  
+                                                    </span>
+                                                <?php echo $data['generator_system_capacity']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        GENERATOR AMC ORGANIZATION NAME :  
+                                                    </span>
+                                                <?php echo $data['generator_system_amc_org_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        GENERATOR AMC PERIOD :  
+                                                    </span>
+                                                <?php echo $data['generator_system_amc_period']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ELECTRICAL AUDIT REPORT ORG NAME :  
+                                                    </span>
+                                                <?php echo $data['electrical_audit_report_org_name']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        ELECTRICAL AUDIT REPORT DATE :  
+                                                    </span>
+                                                <?php echo $data['electrical_audit_report_date']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        EMERGENCY POWER SYSTEM :  
+                                                    </span>
+                                                <?php echo $data['emergency_power_system']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        INFO ABOUT FIRE PREVENTION MEASURES :  
+                                                    </span>
+                                                <?php echo $data['info_about_fire_prevention_measures']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        MOCK DRILL DATE :  
+                                                    </span>
+                                                <?php echo $data['mock_drill_date']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        NO. OF EMPLOYEES PRESENT FOR MOCK DRILL :  
+                                                    </span>
+                                                <?php echo $data['no_emp_present_for_mock_drill']; ?></div>
+                                                <div class="mb-2">  <?php Html :: page_link_file($data['upload_photo_of_employee_present_for_mock_drill']); ?></div>
+                                                <div class="mb-2">  <?php Html :: page_link_file($data['upload_fire_marshal_names_with_mobile_no']); ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        WATER STORAGE CAPACITY (TERRACE) :  
+                                                    </span>
+                                                <?php echo $data['water_storage_capacity_terrace']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        WATER STORAGE CAPACITY (GROUND FLOOR) :  
+                                                    </span>
+                                                <?php echo $data['water_storage_capacity_groundfloor']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        FIRE NOC DETAILS :  
+                                                    </span>
+                                                <?php echo $data['fire_noc_details']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        FIRE NOC DATE :  
+                                                    </span>
+                                                <?php echo $data['fire_noc_date']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        OTHER INFO ABOUT HOSPITAL :  
+                                                    </span>
+                                                <?php echo $data['other_info_about_hospital']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        OXYGEN SYSTEM :  
+                                                    </span>
+                                                <?php echo $data['oxygen_system']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        MAINTENANCE OF EMERGENCY ROUTES :  
+                                                    </span>
+                                                <?php echo $data['maintenance_of_emergency_routes']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        REMARK :  
+                                                    </span>
+                                                <?php echo $data['remark']; ?></div>
+                                                <div class="mb-2">  
+                                                    <span class="font-weight-light text-muted ">
+                                                        User ID :  
+                                                    </span>
+                                                <?php echo $data['user_id']; ?></div>
+                                                <span>
+                                                    <?php 
+                                                    if (!empty($data['date']) && $data['date'] !== "0000-00-00" && $data['date'] !== "1970-01-01") {
+                                                    echo date("jS F Y", strtotime($data['date']));
+                                                    } else {
+                                                    echo ""; // Display empty block
+                                                    }
+                                                    ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <?php 
+                                        }
+                                        ?>
+                                        <!--endrecord-->
+                                    </div>
+                                    <div class="row sm-gutters search-data" id="search-data-<?php echo $page_element_id; ?>"></div>
+                                    <div>
+                                    </div>
+                                </div>
+                                <?php
+                                if($show_footer == true){
+                                ?>
+                                <div class=" border-top mt-2">
+                                    <div class="row justify-content-center">    
+                                        <div class="col-md-auto">   
+                                        </div>
+                                        <div class="col">   
+                                            <?php
+                                            if($show_pagination == true){
+                                            $pager = new Pagination($total_records, $record_count);
+                                            $pager->route = $this->route;
+                                            $pager->show_page_count = true;
+                                            $pager->show_record_count = true;
+                                            $pager->show_page_limit =true;
+                                            $pager->limit_count = $this->limit_count;
+                                            $pager->show_page_number_list = true;
+                                            $pager->pager_link_range=5;
+                                            $pager->render();
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                }
+                                }
+                                else{
+                                ?>
+                                <div class="text-muted  animated bounce p-3">
+                                    <h4><i class="fa fa-ban"></i> No record found</h4>
+                                </div>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

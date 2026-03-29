@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap');
+*{
+    font-family: "Signika Negative", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Updated Login Box Styling - Color & Shadow */
+body.index-index .page-content {
+    background: rgba(255, 255, 255, 0.85); /* Increased transparency */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Stronger shadow effect */
+    width: 340px;
+    margin-right: 70px;
+    margin-left: 70px;
+    margin-top: 10px; /* Moves box slightly up */
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(5px); /* Smooth glass effect */
+    transition: all 0.3s ease-in-out;
+}
+
+/* General Container Styles */
+.container-fluid {
+    padding: 20px;
+    background: #f5f7fa; /* Light background */
+}
+
+/* Page Heading */
+h3 {
+    color: #1E3A8A; /* Royal Blue */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #f8fafc; /* Soft Gray Background */
+    border: 1px solid #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #F59E0B, #FBBF24); /* Soft Orange Gradient */
+    color: #fff !important; /* White Text */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 10px 10px 0 0;
+}
+
+
+
+/* Card Body (Details) */
+.card-body {
+    padding: 15px;
+}
+
+/* Details Styling for Wings */
+details {
+    background: #f1f5f9;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin-top: 5px;
+    padding: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Wing Summary */
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: #1E40AF;
+    outline: none;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Summary Hover Effect */
+summary:hover {
+    color: #3B82F6;
+}
+
+/* Add Wing & Add Floor Buttons */
+.btn-primary, .btn-danger, .btn-success {
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background: #3B82F6;
+    border: none;
+}
+
+.btn-danger {
+    background: #EF4444;
+    border: none;
+}
+
+.btn-success {
+    background: #22C55E;
+    border: none;
+}
+
+/* Button Hover Effects */
+.btn-primary:hover {
+    background: #2563EB;
+    transform: translateY(-3px);
+}
+
+.btn-danger:hover {
+    background: #DC2626;
+    transform: translateY(-3px);
+}
+
+.btn-success:hover {
+    background: #16A34A;
+    transform: translateY(-3px);
+}
+
+/* Link Styling */
+a {
+    text-decoration: none;
+    color: #1E40AF;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #3B82F6;
+}
+
+/* Margin and Padding Adjustments */
+br {
+    margin-top: 5px;
+}
+
+hr {
+    border: 1px solid #d1d5db;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
